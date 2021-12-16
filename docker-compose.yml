@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  lt:
+    build:
+      context: ./
+      dockerfile: Dockerfile-lt
+    expose:
+      - 3000
+
+  nginx:
+    build:
+      context: ./
+      dockerfile: Dockerfile-nginx
+    volumes:
+      - ./servers/:/etc/nginx/servers/:ro
+      - /etc/letsencrypt/:/etc/letsencrypt/:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - lt
